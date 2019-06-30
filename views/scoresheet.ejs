@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles/app.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+        integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <title>Score sheet</title>
+    <title></title>
+</head>
+
+<body>
+    <nav class="bg-success navbar navbar-light" style="background-color: #e3f2fd;">
+        <div class="container">
+            <strong><a class="text-light navbar-brand" href="/"> <i class="fas fa-file-upload"></i> Score uploader</a></strong>
+            <span class="navbar-text">
+                <a class="text-light nav-link" href="/"><i class="fas fa-backward"></i> Go Home</a>
+            </span>
+        </div>
+    </nav>
+    <br>
+    <div class="container">
+        <div class="row">
+            <table class="table table-dark">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Maths</th>
+                        <th scope="col">English</th>
+                    </tr>
+                </thead>
+                <tbody id='student-list'>                  
+                    <% students.forEach ((student, index, array)=> { %>
+                        <tr class='student'>                          
+                                <th scope="row"><%=index+1%></th>
+                                <td><%=student.name%></td>
+                                <td><%=student.age%></td>
+                                <td><%=student.maths%></td>
+                                <td><%=student.english%></td>
+                                <td class='delete-item'>
+                                <form  action="/scoresheet/<%=student._id%>?_method=DELETE" method="POST" style="display: inline">
+                                        <button class='btn btn-danger'>Delete <i class="fas fa-trash-alt"></i></button>
+                                </form>
+                                </td>                                  
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<script src='js/mainapp.js'></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<nav class="bg-success navbar navbar-light" style="background-color: #e3f2fd ;padding:20px;">
+    <div class="text-light container d-flex justify-content-center">
+        &copy; <strong>Fincon 2019.</strong>
+    </div>
+</nav>
+</html>
