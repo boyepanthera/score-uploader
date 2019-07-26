@@ -3,7 +3,7 @@ import multer from 'multer';
 import xlstojson from 'xls-to-json-lc';
 import xlsxtojson from 'xlsx-to-json-lc';
 import mongoose from 'mongoose';
-import Students from './models/Excel-Parser';
+import Students from './models/Students';
 import methodOverride from 'method-override';
 const app = express();
 const port = 9090|| process.env.PORT;
@@ -13,7 +13,6 @@ app.use(express.static(__dirname + "/public"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(methodOverride('_method'));
-
 
 const url ='mongodb://localhost:27017/excel-parser';
 
@@ -57,19 +56,6 @@ app.get('/scoresheet', (req, res) => {
     Students.find({}, (err, students) => {
         try {
             res.render('scoresheet', {students});
-            // let newData = {
-            //     sheets: [
-            //         {
-            //             items: students
-            //         }
-
-            //     ],
-            //     filepath: `${__dirname}/public/scoresheet.xlsx`
-            // }
-            // jexcel.j2e(newData, function (err) {
-            //     console.log('finish')
-            //     res.download
-            // });
         }
         catch (err) {
             console.error(err);
@@ -89,8 +75,10 @@ app.post('/scoresheet', (req, res) =>{
         }
         if (req.file.originalname.split('.')[req.file.originalname.split('.').length - 1] === 'xlsx') {
             exceltojson = xlsxtojson;
+            console.log(req.file.path);
         } else {
             exceltojson = xlstojson;
+            console.log(req.file.path);
         }
         try {
             exceltojson({
@@ -103,17 +91,7 @@ app.post('/scoresheet', (req, res) =>{
                     return res.status(500).json({ statusCode: 500, statusDesc: err, data: null });
                 }
                 Students.create(result, (err, savedData) => {
-                    // try {
-                    //     // if sending as APi to client
-                    //     // res.status(200).json({ statusCode: 200, statusDesc: null, data: result }); 
-                    //     // OR
-                    //     // if redirecting to a page that shows all scores in tables    
-                    //     return res.redirect('/scoresheet');
-                    // } catch(err) {
-                    //     console.log(err);
-                    //     res.status(500).json({ statusCode: 500, statusDesc: "Internal server error", data: result });
-                    // }
-                    // if rendering from server to client 
+                    // for rendering from server to client 
                     try {
                         res.redirect('/scoresheet');
                     } catch (err) {
@@ -130,8 +108,8 @@ app.post('/scoresheet', (req, res) =>{
 app.delete('/scoresheet/:id', (req, res) => {
     try{
         Students.findByIdAndDelete(req.params.id, (err, deleted)=> {
-        // res.status(200).send({statusCode:200, statusDesc: "One student item deleted"})
-        res.redirect('/scoresheet');
+        res.status(200).send({statusCode:200, statusDesc: "One student item deleted"})
+        // res.redirect('/scoresheet');
         });
     } catch (err) {
         console.error('error deleting requested data');
